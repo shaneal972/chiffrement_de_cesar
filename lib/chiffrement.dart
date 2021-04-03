@@ -9,11 +9,7 @@ class Chiffrement {
   List<String> alphabetSecret;
 
   List<String> chiffrerAlphabet(List<String> alphabet, int secret){
-    for(int i = 0; i < alphabet.length; i++){
-      alphabetSecret.add(alphabet[i + secret]);
-    }
-    print(alphabetSecret);
-    return alphabetSecret;
+   
   }
 
 
