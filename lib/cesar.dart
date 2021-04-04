@@ -10,6 +10,7 @@ class Cesar extends StatefulWidget {
 class _CesarState extends State<Cesar> {
   final _secretController = TextEditingController();
   final _messageController = TextEditingController();
+  final chiffrement = Chiffrement();
 
   var _formKey = GlobalKey<FormState>();
   String message;
@@ -51,6 +52,7 @@ class _CesarState extends State<Cesar> {
     messageSecret = [];
     setState(() {
       message = _messageController.value.text;
+      message = message.replaceAll(' ', '');
       print(message);
       int secret = int.parse(_secretController.value.text);
       String lettre = "";
@@ -58,15 +60,17 @@ class _CesarState extends State<Cesar> {
 
       while (index < message.length) {
         lettre = message[index].toUpperCase();
+
         var indexLettreInAlphabet = alphabet.indexOf(lettre);
         var limite = alphabet.length - indexLettreInAlphabet;
-        if (limite < secret) {
+        if (limite <= secret) {
           var indexLimite = secret - limite;
           codeSecret = alphabet[indexLimite];
         } else {
           codeSecret = alphabet[indexLettreInAlphabet + secret];
         }
         messageSecret.add(codeSecret);
+
         index++;
       }
 
@@ -124,13 +128,13 @@ class _CesarState extends State<Cesar> {
                     Expanded(
                       child: TextFormField(
                         controller: _messageController,
-                        validator: (value){
-                          if(_messageController.value.text == ""){
+                        validator: (value) {
+                          if (_messageController.value.text == "") {
                             return "Vous devez renseigner ce champ";
-                          }else{
+                          } else {
                             return value;
                           }
-                        } ,
+                        },
                         maxLines: 3,
                         keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
@@ -160,10 +164,10 @@ class _CesarState extends State<Cesar> {
                     Expanded(
                       child: TextFormField(
                         controller: _secretController,
-                        validator: (value){
-                          if(_messageController.value.text == ""){
+                        validator: (value) {
+                          if (_messageController.value.text == "") {
                             return "Vous devez renseigner ce champ";
-                          }else{
+                          } else {
                             return value;
                           }
                         },
