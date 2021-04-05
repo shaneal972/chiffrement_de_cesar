@@ -8,15 +8,46 @@ class CesarLock extends StatefulWidget {
 class _CesarLockState extends State<CesarLock> {
   final _secretController = TextEditingController();
   var _textCrypteController = TextEditingController();
+  List<String> _tabMessage = [];
+  List<String> _alphabet = [];
 
   var _formKey = GlobalKey<FormState>();
+  List<String> messageClair = [];
+  String messageCrypte;
+  int code;
 
   _deleteMessage() {
     _secretController.clear();
   }
 
-  _dechiffrer() {
-    setState(() {});
+  _dechiffrerMessage() {
+   print(_tabMessage);
+
+    messageClair = [];
+    setState(() {
+      messageCrypte = _textCrypteController.text;
+      code = int.parse(_secretController.text);
+      int i = 0;
+      String lettre = "";
+      String lettreClair = "";
+
+      while(i < messageCrypte.length){
+        lettre = messageCrypte[i];
+        var indexLettreInTabMessage = _tabMessage.indexOf(lettre);
+
+        lettreClair = _alphabet[indexLettreInTabMessage];
+
+        messageClair.add(lettreClair);
+
+        i++;
+      }
+
+
+
+      print(messageCrypte);
+      print(code);
+      print(messageClair);
+    });
   }
 
   @override
@@ -25,12 +56,19 @@ class _CesarLockState extends State<CesarLock> {
 
     var messageSecret = args['messageSecret'];
     int secret = args['secret'];
+    _tabMessage = args['tabMessage'];
+    _alphabet = args['alphabet'];
     String textCrypte = "";
+    String textClair = "";
 
 
 
     for (int i = 0; i < messageSecret.length; i++) {
       textCrypte += messageSecret[i];
+    }
+
+    for (int i = 0; i < messageClair.length; i++) {
+      textClair += messageClair[i];
     }
 
 
@@ -62,6 +100,7 @@ class _CesarLockState extends State<CesarLock> {
                     Expanded(
                       child: Card(
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ListTile(
                               leading: Icon(
@@ -72,16 +111,25 @@ class _CesarLockState extends State<CesarLock> {
                               title: TextField(
                                 controller: _textCrypteController,
                                 onTap: () {
-                                  _textCrypteController.text = textCrypte;
-
+                                  setState(() {
+                                    _textCrypteController.text = textCrypte;
+                                    _secretController.text = secret.toString();
+                                  });
                                 },
+                              ),
+                            ),
+                            Visibility(
+                              visible: false,
+                              child: TextField(
+                                controller: _secretController,
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Text(
                                 '''
-                                Text décrypté
+                                Message en clair : 
+                                ${textClair}
                                 ''',
                                 style: TextStyle(
                                   color: Colors.black.withOpacity(0.6),
@@ -111,7 +159,7 @@ class _CesarLockState extends State<CesarLock> {
                             MaterialStateProperty.all(Colors.green),
                       ),
                       child: Text("Déchiffrer"),
-                      onPressed: _dechiffrer,
+                      onPressed: _dechiffrerMessage,
                     ),
                   ],
                 ),
