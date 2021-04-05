@@ -5,52 +5,60 @@ import 'chiffrement.dart';
 class Cesar extends StatefulWidget {
   @override
   _CesarState createState() => _CesarState();
+
+
 }
 
 class _CesarState extends State<Cesar> {
   final _secretController = TextEditingController();
   final _messageController = TextEditingController();
-  final chiffrement = Chiffrement();
+  List<String> tabMessage;
+  List<String> alphabet;
+
+
+  List<String> decalageAlphabet(List<String> alphabet, int decalage){
+    tabMessage = [];
+    for(int i = 0; i < alphabet.length; i++) {
+      var lettre;
+      var limite = alphabet.length - alphabet.indexOf(alphabet[i]);
+      if (limite <= decalage) {
+        var indexLimite = decalage - limite;
+        lettre = alphabet[indexLimite];
+      } else {
+        lettre = alphabet[alphabet.indexOf(alphabet[i + decalage])];
+      }
+      tabMessage.add(lettre);
+    }
+    return (tabMessage);
+  }
+
+  @override
+  void initState() {
+    alphabet = [
+      "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
+      "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+    super.initState();
+    tabMessage = decalageAlphabet(alphabet, 6);
+    
+  }
 
   var _formKey = GlobalKey<FormState>();
   String message;
   String codeSecret;
 
-  List<String> alphabet = [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S",
-    "T",
-    "U",
-    "V",
-    "W",
-    "X",
-    "Y",
-    "Z"
-  ];
+
+
+
 
   List<String> messageSecret = [];
-  List<String> tabMessage = [];
+
 
   _chiffrerMessage() {
+
+    print(tabMessage);
     messageSecret = [];
     setState(() {
+
       message = _messageController.value.text;
       message = message.replaceAll(' ', '');
       print(message);

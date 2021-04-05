@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'cesar.dart';
 
-class Chiffrement {
+class  Chiffrement {
+
+
+
   List<String> alphabet = [
     "A",
     "B",
@@ -52,4 +55,8 @@ class Chiffrement {
       index++;
     }
   }
+
+
+
+
 }
