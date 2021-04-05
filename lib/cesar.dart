@@ -78,7 +78,10 @@ class _CesarState extends State<Cesar> {
       Navigator.pushNamed(
         context,
         '/cesar_lock',
-        arguments: messageSecret,
+        arguments: {
+          'messageSecret': messageSecret,
+          'secret' : secret
+        },
       );
     });
   }
@@ -98,117 +101,117 @@ class _CesarState extends State<Cesar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            "Chiffrement de César",
-          ),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "Chiffrement de César",
         ),
-        body: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 15.0),
+      ),
+      body: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 15.0),
+            ),
+            Container(
+              // color: Colors.grey,
+              padding: EdgeInsets.all(20.0),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 8.0),
+                    child: Icon(
+                      Icons.lock_open,
+                      size: 30.0,
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      controller: _messageController,
+                      validator: (value) {
+                        if (_messageController.value.text == "") {
+                          return "Vous devez renseigner ce champ";
+                        } else {
+                          return value;
+                        }
+                      },
+                      maxLines: 3,
+                      keyboardType: TextInputType.multiline,
+                      decoration: InputDecoration(
+                        labelText: "Entrez votre message",
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          var message = value;
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
-              Container(
-                // color: Colors.grey,
-                padding: EdgeInsets.all(20.0),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 8.0),
-                      child: Icon(
-                        Icons.lock_open,
-                        size: 30.0,
-                        color: Colors.deepPurple,
+            ),
+            Container(
+              padding: EdgeInsets.all(20.0),
+              child: Row(
+                children: [
+                  Text(
+                    "Décalage : ",
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      controller: _secretController,
+                      validator: (value) {
+                        if (_messageController.value.text == "") {
+                          return "Vous devez renseigner ce champ";
+                        } else {
+                          return value;
+                        }
+                      },
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        hintText: "Tapez un chiffre",
+                        border: OutlineInputBorder(),
                       ),
+                      onSaved: (value) {
+                        setState(() {
+                          var secret = value;
+                        });
+                      },
                     ),
-                    Expanded(
-                      child: TextFormField(
-                        controller: _messageController,
-                        validator: (value) {
-                          if (_messageController.value.text == "") {
-                            return "Vous devez renseigner ce champ";
-                          } else {
-                            return value;
-                          }
-                        },
-                        maxLines: 3,
-                        keyboardType: TextInputType.multiline,
-                        decoration: InputDecoration(
-                          labelText: "Entrez votre message",
-                          border: OutlineInputBorder(),
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            var message = value;
-                          });
-                        },
-                      ),
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.green),
                     ),
-                  ],
-                ),
+                    child: Text("Chiffrer"),
+                    onPressed: _chiffrerMessage,
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.red),
+                    ),
+                    child: Text("Effacer"),
+                    onPressed: _deleteMessage,
+                  ),
+                ],
               ),
-              Container(
-                padding: EdgeInsets.all(20.0),
-                child: Row(
-                  children: [
-                    Text(
-                      "Décalage : ",
-                    ),
-                    SizedBox(
-                      width: 10.0,
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        controller: _secretController,
-                        validator: (value) {
-                          if (_messageController.value.text == "") {
-                            return "Vous devez renseigner ce champ";
-                          } else {
-                            return value;
-                          }
-                        },
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          hintText: "Tapez un chiffre",
-                          border: OutlineInputBorder(),
-                        ),
-                        onSaved: (value) {
-                          setState(() {
-                            var secret = value;
-                          });
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10.0,
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.green),
-                      ),
-                      child: Text("Chiffrer"),
-                      onPressed: _chiffrerMessage,
-                    ),
-                    SizedBox(
-                      width: 10.0,
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.red),
-                      ),
-                      child: Text("Effacer"),
-                      onPressed: _deleteMessage,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
