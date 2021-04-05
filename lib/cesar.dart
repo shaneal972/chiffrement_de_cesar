@@ -35,30 +35,21 @@ class _CesarState extends State<Cesar> {
   @override
   void initState() {
     alphabet = [
-      "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
-      "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+      "A", "À", "B", "C", "D", "E", "É", "È", "Ê", "F", "G", "H", "I", "Ï", "J", "K", "L", "M", "N", "O",
+      "Œ", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
     super.initState();
-    tabMessage = decalageAlphabet(alphabet, 6);
-    
   }
 
   var _formKey = GlobalKey<FormState>();
   String message;
   String codeSecret;
 
-
-
-
-
   List<String> messageSecret = [];
 
 
   _chiffrerMessage() {
-
-    print(tabMessage);
     messageSecret = [];
     setState(() {
-
       message = _messageController.value.text;
       message = message.replaceAll(' ', '');
       print(message);
@@ -67,30 +58,26 @@ class _CesarState extends State<Cesar> {
       int index = 0;
 
       while (index < message.length) {
+        tabMessage = decalageAlphabet(alphabet, secret);
         lettre = message[index].toUpperCase();
 
         var indexLettreInAlphabet = alphabet.indexOf(lettre);
-        var limite = alphabet.length - indexLettreInAlphabet;
-        if (limite <= secret) {
-          var indexLimite = secret - limite;
-          codeSecret = alphabet[indexLimite];
-        } else {
-          codeSecret = alphabet[indexLettreInAlphabet + secret];
-        }
+        codeSecret = tabMessage[indexLettreInAlphabet];
         messageSecret.add(codeSecret);
 
         index++;
       }
-
-      print(messageSecret);
       Navigator.pushNamed(
         context,
         '/cesar_lock',
         arguments: {
           'messageSecret': messageSecret,
-          'secret' : secret
+          'secret' : secret,
+          'tabMessage' : tabMessage,
+          'alphabet' : alphabet
         },
       );
+      _deleteMessage();
     });
   }
 
