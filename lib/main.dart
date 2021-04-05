@@ -15,7 +15,7 @@ class CesarCode extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        // When navigating to the "/cesar_lock" route, build the CesarLock widget.
+        // "/cesar_lock" route, construit le CesarLock widget.
         '/cesar_lock': (context) => CesarLock(),
       },
       title: 'Flutter : Chiffrement de César',
