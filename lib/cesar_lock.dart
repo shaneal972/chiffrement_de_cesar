@@ -10,6 +10,8 @@ class _CesarLockState extends State<CesarLock> {
   var _textCrypteController = TextEditingController();
   List<String> _tabMessage = [];
   List<String> _alphabet = [];
+  List<String> messageSecret = [];
+
 
   var _formKey = GlobalKey<FormState>();
   List<String> messageClair = [];
@@ -21,7 +23,7 @@ class _CesarLockState extends State<CesarLock> {
   }
 
   _dechiffrerMessage() {
-   print(_tabMessage);
+    print(_tabMessage);
 
     messageClair = [];
     setState(() {
@@ -31,7 +33,7 @@ class _CesarLockState extends State<CesarLock> {
       String lettre = "";
       String lettreClair = "";
 
-      while(i < messageCrypte.length){
+      while (i < messageCrypte.length) {
         lettre = messageCrypte[i];
         var indexLettreInTabMessage = _tabMessage.indexOf(lettre);
 
@@ -41,12 +43,13 @@ class _CesarLockState extends State<CesarLock> {
 
         i++;
       }
-
-
-
-      print(messageCrypte);
-      print(code);
-      print(messageClair);
+      Navigator.pushNamed(
+        context,
+        '/cesar',
+        arguments: {
+          'mesageClair' : messageClair,
+        },
+      );
     });
   }
 
@@ -54,14 +57,12 @@ class _CesarLockState extends State<CesarLock> {
   Widget build(BuildContext context) {
     final Map args = ModalRoute.of(context).settings.arguments;
 
-    var messageSecret = args['messageSecret'];
+    messageSecret = args['messageSecret'];
     int secret = args['secret'];
     _tabMessage = args['tabMessage'];
     _alphabet = args['alphabet'];
     String textCrypte = "";
     String textClair = "";
-
-
 
     for (int i = 0; i < messageSecret.length; i++) {
       textCrypte += messageSecret[i];
@@ -70,8 +71,6 @@ class _CesarLockState extends State<CesarLock> {
     for (int i = 0; i < messageClair.length; i++) {
       textClair += messageClair[i];
     }
-
-
 
     return Scaffold(
       appBar: AppBar(

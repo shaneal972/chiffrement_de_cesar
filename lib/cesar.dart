@@ -94,6 +94,11 @@ class _CesarState extends State<Cesar> {
 
   @override
   Widget build(BuildContext context) {
+
+    final Map args = ModalRoute.of(context).settings.arguments;
+
+    var messageClair = args['messageClair'];
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -141,6 +146,13 @@ class _CesarState extends State<Cesar> {
                       onChanged: (value) {
                         setState(() {
                           var message = value;
+                        });
+                      },
+                      onTap: (){
+                        setState(() {
+                          for(int i = 0; i < messageClair.length; i++){
+                            print(messageClair[i]);
+                          }
                         });
                       },
                     ),

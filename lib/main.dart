@@ -18,6 +18,7 @@ class CesarCode extends StatelessWidget {
       routes: {
         // "/cesar_lock" route, construit le CesarLock widget.
         '/cesar_lock': (context) => CesarLock(),
+        '/cesar': (context) => Cesar(),
       },
       title: 'Flutter : Chiffrement de César',
       theme: ThemeData(
