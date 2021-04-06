@@ -66,7 +66,7 @@ class Chiffrement {
 
       var indexLettreInAlphabet = alphabet.indexOf(lettre);
       codeSecret = alphabetSecret[indexLettreInAlphabet];
-      
+
       messageSecret.add(codeSecret);
 
       index++;
