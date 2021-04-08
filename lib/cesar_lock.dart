@@ -12,7 +12,6 @@ class _CesarLockState extends State<CesarLock> {
   List<String> _alphabet = [];
   List<String> messageSecret = [];
 
-
   var _formKey = GlobalKey<FormState>();
   List<String> messageClair = [];
   String messageCrypte;
@@ -23,8 +22,6 @@ class _CesarLockState extends State<CesarLock> {
   }
 
   _dechiffrerMessage() {
-    print(_tabMessage);
-
     messageClair = [];
     setState(() {
       messageCrypte = _textCrypteController.text;
@@ -43,14 +40,14 @@ class _CesarLockState extends State<CesarLock> {
 
         i++;
       }
-      Navigator.pushNamed(
-        context,
-        '/cesar',
-        arguments: {
-          'mesageClair' : messageClair,
-        },
-      );
     });
+  }
+
+  @override
+  void dispose() {
+    _secretController.dispose();
+    _textCrypteController.dispose();
+    super.dispose();
   }
 
   @override
@@ -80,91 +77,116 @@ class _CesarLockState extends State<CesarLock> {
         ),
       ),
       body: SafeArea(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 15.0),
-              ),
-              Container(
-                // color: Colors.grey,
-                padding: EdgeInsets.all(20.0),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 8.0),
-                    ),
-                    Expanded(
-                      child: Card(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ListTile(
-                              leading: Icon(
-                                Icons.lock,
-                                size: 30.0,
-                                color: Colors.deepPurple,
-                              ),
-                              title: TextField(
-                                controller: _textCrypteController,
-                                onTap: () {
-                                  setState(() {
-                                    _textCrypteController.text = textCrypte;
-                                    _secretController.text = secret.toString();
-                                  });
-                                },
-                              ),
-                            ),
-                            Visibility(
-                              visible: false,
-                              child: TextField(
-                                controller: _secretController,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                '''
-                                Message en clair : 
-                                ${textClair}
-                                ''',
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.6),
-                                ),
-                                maxLines: 5,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(20.0),
-                child: Row(
+        child: Column(
+          children: [
+            Container(
+              height: 100,
+              child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      width: 10.0,
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.green),
+                    Text(
+                      "Taper sur champ à droite du cadenas ",
+                      style: TextStyle(
+                        fontSize: 17,
                       ),
-                      child: Text("Déchiffrer"),
-                      onPressed: _dechiffrerMessage,
                     ),
-                  ],
-                ),
+                    Text(
+                      "afin de faire apparaître le message crypté.",
+                      style: TextStyle(
+                        fontSize: 17,
+                      ),
+                    ),
+                  ]),
+            ),
+            Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 15.0),
+                  ),
+                  Container(
+                    // color: Colors.grey,
+                    padding: EdgeInsets.all(20.0),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 8.0),
+                        ),
+                        Expanded(
+                          child: Card(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ListTile(
+                                  leading: Icon(
+                                    Icons.lock,
+                                    size: 30.0,
+                                    color: Colors.deepPurple,
+                                  ),
+                                  title: TextField(
+                                    controller: _textCrypteController,
+                                    onTap: () {
+                                      setState(() {
+                                        _textCrypteController.text = textCrypte;
+                                        _secretController.text =
+                                            secret.toString();
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: false,
+                                  child: TextField(
+                                    controller: _secretController,
+                                  ),
+                                ),
+                                Text(
+                                  "Message en clair : ",
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 10),
+                                ),
+                                Text(
+                                  '''
+                                    ${textClair}
+                                  ''',
+                                  style: TextStyle(
+                                    color: Colors.black.withOpacity(0.6),
+                                  ),
+                                  maxLines: 5,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.green),
+                          ),
+                          child: Text("Déchiffrer"),
+                          onPressed: _dechiffrerMessage,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
