@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 class Cesar extends StatefulWidget {
   @override
   _CesarState createState() => _CesarState();
-
-
 }
 
 class _CesarState extends State<Cesar> {
@@ -45,13 +43,11 @@ class _CesarState extends State<Cesar> {
 
   List<String> messageSecret = [];
 
-
   _chiffrerMessage() {
     messageSecret = [];
     setState(() {
       message = _messageController.value.text;
       message = message.replaceAll(' ', '');
-      print(message);
       int secret = int.parse(_secretController.value.text);
       String lettre = "";
       int index = 0;
@@ -66,6 +62,7 @@ class _CesarState extends State<Cesar> {
 
         index++;
       }
+
       Navigator.pushNamed(
         context,
         '/cesar_lock',
@@ -94,11 +91,6 @@ class _CesarState extends State<Cesar> {
 
   @override
   Widget build(BuildContext context) {
-
-    final Map args = ModalRoute.of(context).settings.arguments;
-
-    var messageClair = args['messageClair'];
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -146,13 +138,6 @@ class _CesarState extends State<Cesar> {
                       onChanged: (value) {
                         setState(() {
                           var message = value;
-                        });
-                      },
-                      onTap: (){
-                        setState(() {
-                          for(int i = 0; i < messageClair.length; i++){
-                            print(messageClair[i]);
-                          }
                         });
                       },
                     ),
